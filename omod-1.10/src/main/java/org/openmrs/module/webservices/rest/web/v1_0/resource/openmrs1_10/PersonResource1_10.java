@@ -10,63 +10,26 @@
 package org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_10;
 
 import io.swagger.models.Model;
-import io.swagger.models.ModelImpl;
-import io.swagger.models.properties.BooleanProperty;
-import io.swagger.models.properties.DateTimeProperty;
 import org.openmrs.Person;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PersonResource1_8;
 
 /**
  * {@link Resource} for Person, supporting standard CRUD operations
  */
 @Resource(name = RestConstants.VERSION_1 + "/person", order = 1, supportedClass = Person.class, supportedOpenmrsVersions = {
-        "1.10.*","1.11.*", "1.12.*", "2.0.*", "2.1.*" })
+        "1.10.*"})
 public class PersonResource1_10 extends PersonResource1_8 {
 
-    /**
-     * @see DelegatingCrudResource#getRepresentationDescription(Representation)
-     */
-    @Override
-    public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
-        DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-        if (description != null) {
-            description.addProperty("deathdateEstimated");
-            description.addProperty("birthtime");
-        }
-        return description;
-    }
-
-    /**
-     * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getCreatableProperties()
-     */
-    @Override
-    public DelegatingResourceDescription getCreatableProperties() {
-        DelegatingResourceDescription description = super.getCreatableProperties();
-        description.addProperty("deathdateEstimated");
-        description.addProperty("birthtime");
-        return description;
-    }
 
     /**
      * @throws org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException
      * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getUpdatableProperties()
      */
-    @Override
-    public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
-        DelegatingResourceDescription description = super.getUpdatableProperties();
-        description.addProperty("deathdateEstimated");
-        description.addProperty("birthtime");
-        return description;
-    }
-
     @Override
     public Model getGETModel(Representation rep) {
         return addNewProperties(super.getGETModel(rep), rep);
@@ -84,9 +47,7 @@ public class PersonResource1_10 extends PersonResource1_8 {
 
     private Model addNewProperties(Model model, Representation rep) {
         if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
-            ((ModelImpl) model)
-                    .property("deathdateEstimated", new BooleanProperty()._default(false))
-                    .property("birthtime", new DateTimeProperty());
+
         }
         return model;
     }

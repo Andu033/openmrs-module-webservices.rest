@@ -24,20 +24,8 @@ package org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_10;
         }
 
         @Override
-        public void validateDefaultRepresentation() throws Exception {
-        super.validateDefaultRepresentation();
-        assertPropEquals("birthtime", newObject().getBirthdate());
-        }
-
-        @Override
-        public void validateFullRepresentation() throws Exception {
-        super.validateFullRepresentation();
-        assertPropEquals("birthtime", newObject().getBirthdate());
-        }
-
-        @Override
         public String getDisplayProperty() {
-        return "Mr. Horatio Test Hornblower";
+        return "Mr. Horatio Test Hornblower Esq.";
         }
 
         @Override
