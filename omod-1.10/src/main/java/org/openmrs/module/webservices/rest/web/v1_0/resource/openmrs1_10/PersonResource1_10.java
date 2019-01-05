@@ -13,8 +13,6 @@ import io.swagger.models.Model;
 import org.openmrs.Person;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PersonResource1_8;
 
@@ -46,9 +44,7 @@ public class PersonResource1_10 extends PersonResource1_8 {
     }
 
     private Model addNewProperties(Model model, Representation rep) {
-        if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 
-        }
         return model;
     }
 
