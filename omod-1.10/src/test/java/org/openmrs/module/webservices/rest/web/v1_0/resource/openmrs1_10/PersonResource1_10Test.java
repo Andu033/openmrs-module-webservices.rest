@@ -9,14 +9,11 @@
  */
 package org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_10;
 
-        import org.openmrs.Person;
-        import org.openmrs.api.context.Context;
-        import org.openmrs.module.webservices.rest.web.RestConstants;
-        import org.openmrs.module.webservices.rest.web.RestTestConstants1_8;
-        import org.openmrs.module.webservices.rest.web.annotation.Resource;
-        import org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResourceTest;
-@Resource(name = RestConstants.VERSION_1 + "/person", order = 1, supportedClass = Person.class, supportedOpenmrsVersions = {
-        "1.10.*"})
+import org.openmrs.Person;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.webservices.rest.web.RestTestConstants1_8;
+import org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResourceTest;
+
 public class PersonResource1_10Test extends BaseDelegatingResourceTest<PersonResource1_10, Person> {
 
     @Override
