@@ -1,5 +1,3 @@
-//package org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_10;
-
 /**
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
@@ -13,23 +11,26 @@ package org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_10;
 
         import org.openmrs.Person;
         import org.openmrs.api.context.Context;
+        import org.openmrs.module.webservices.rest.web.RestConstants;
         import org.openmrs.module.webservices.rest.web.RestTestConstants1_8;
+        import org.openmrs.module.webservices.rest.web.annotation.Resource;
         import org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResourceTest;
+@Resource(name = RestConstants.VERSION_1 + "/person", order = 1, supportedClass = Person.class, supportedOpenmrsVersions = {
+        "1.10.*"})
+public class PersonResource1_10Test extends BaseDelegatingResourceTest<PersonResource1_10, Person> {
 
-        public class PersonResource1_10Test extends BaseDelegatingResourceTest<PersonResource1_10, Person> {
-
-        @Override
-        public Person newObject() {
+    @Override
+    public Person newObject() {
         return Context.getPersonService().getPersonByUuid(getUuidProperty());
-        }
+    }
 
-        @Override
-        public String getDisplayProperty() {
+    @Override
+    public String getDisplayProperty() {
         return "Mr. Horatio Test Hornblower Esq.";
-        }
+    }
 
-        @Override
-        public String getUuidProperty() {
+    @Override
+    public String getUuidProperty() {
         return RestTestConstants1_8.PERSON_UUID;
-        }
-        }
+    }
+}
