@@ -14,6 +14,8 @@ import org.openmrs.Person;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
+import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PersonResource1_8;
 
 /**
@@ -23,6 +25,27 @@ import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PersonRe
         "1.10.*"})
 public class PersonResource1_10 extends PersonResource1_8 {
 
+    /**
+     * @see DelegatingCrudResource#getRepresentationDescription(Representation)
+     */
+    @Override
+    public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+        DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+        if (description != null) {
+            description.addProperty("birthtime");
+        }
+        return description;
+    }
+
+    /**
+     * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getCreatableProperties()
+     */
+    @Override
+    public DelegatingResourceDescription getCreatableProperties() {
+        DelegatingResourceDescription description = super.getCreatableProperties();
+        description.addProperty("birthtime");
+        return description;
+    }
 
     /**
      * @throws org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException

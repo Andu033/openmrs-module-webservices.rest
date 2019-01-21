@@ -22,6 +22,18 @@ public class PersonResource1_10Test extends BaseDelegatingResourceTest<PersonRes
     }
 
     @Override
+    public void validateDefaultRepresentation() throws Exception {
+        super.validateDefaultRepresentation();
+        assertPropEquals("birthtime", getObject().getBirthtime());
+    }
+
+    @Override
+    public void validateFullRepresentation() throws Exception {
+        super.validateFullRepresentation();
+        assertPropEquals("birthtime", getObject().getBirthtime());
+    }
+
+    @Override
     public String getDisplayProperty() {
         return "Mr. Horatio Test Hornblower Esq.";
     }
