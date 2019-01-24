@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -95,14 +96,20 @@ public class DrugController1_10Test extends MainResourceControllerTest {
 		SimpleObject results = deserialize(handle(newGetRequest(getURI(), new Parameter("s", "getDrugsByMapping"),
 		    new Parameter("code", "CD41003"), new Parameter("source", sourceUuid), new Parameter("preferredMapTypes",
 		            mapTypeUuids))));
-		
+
 		assertEquals(0, Util.getResultsSize(results));
 		
 		mapTypeUuids = conceptService.getConceptMapType(2).getUuid();
 		results = deserialize(handle(newGetRequest(getURI(), new Parameter("s", "getDrugsByMapping"), new Parameter("code",
 		        "CD41003"), new Parameter("source", sourceUuid), new Parameter("preferredMapTypes", mapTypeUuids))));
-		
-		assertEquals(expectedDrugUuid, PropertyUtils.getProperty(Util.getResultsList(results).get(1), "uuid"));
+
+		// Checking if expected drug is contained in response of the request above
+		HashSet<Object> setOfDrugs=new HashSet<Object>();
+		for(Object drug:Util.getResultsList(results)) {
+			setOfDrugs.add(PropertyUtils.getProperty(drug,"uuid"));
+		}
+		assert setOfDrugs.contains(expectedDrugUuid);
+
 	}
 	
 	/**
