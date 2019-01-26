@@ -205,7 +205,6 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 				.property("preferredName", new StringProperty().example("uuid"))
 				.property("preferredAddress", new StringProperty().example("uuid"))
 				.property("attributes", new ArrayProperty(new RefProperty("#/definitions/PersonAttributeCreate")))
-
 				.required("dead").required("causeOfDeath");
 	}
 
