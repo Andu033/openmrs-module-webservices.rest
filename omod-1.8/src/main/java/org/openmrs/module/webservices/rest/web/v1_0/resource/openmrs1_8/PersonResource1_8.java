@@ -50,10 +50,10 @@ import org.openmrs.util.OpenmrsUtil;
  * {@link Resource} for Person, supporting standard CRUD operations
  */
 @Resource(name = RestConstants.VERSION_1 + "/person", order = 2, supportedClass = Person.class, supportedOpenmrsVersions = {
-        "1.8.*", "1.9.*", "1.10.0", "1.10.1", "1.10.2", "1.10.3" })
+		"1.8.*", "1.9.*", "1.10.0 - 1.10.3" })
 //order must be greater than that for PatientResource(order=0) RESTWS-273
 public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#getRepresentationDescription(org.openmrs.module.webservices.rest.web.representation.Representation)
 	 */
@@ -100,7 +100,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getCreatableProperties()
 	 */
@@ -119,7 +119,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		description.addProperty("attributes");
 		return description;
 	}
-	
+
 	/**
 	 * @throws org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getUpdatableProperties()
@@ -141,74 +141,74 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		description.addProperty("deathDate");
 		return description;
 	}
-	
+
 	@Override
 	public Model getGETModel(Representation rep) {
 		ModelImpl model = (ModelImpl) super.getGETModel(rep);
 		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
 			model
-			        .property("uuid", new StringProperty())
-			        .property("display", new StringProperty())
-			        .property("gender", new StringProperty()._enum("M")._enum("F"))
-			        .property("age", new IntegerProperty())
-			        .property("birthdate", new DateTimeProperty())
-			        .property("birthdateEstimated", new BooleanProperty())
-			        .property("dead", new BooleanProperty())
-			        .property("deathDate", new DateProperty())
-			        .property("causeOfDeath", new StringProperty())
-			        .property("attributes", new ArrayProperty(new RefProperty("#/definitions/PersonAttributeGetRef")))
-			        .property("voided", new BooleanProperty());
+					.property("uuid", new StringProperty())
+					.property("display", new StringProperty())
+					.property("gender", new StringProperty()._enum("M")._enum("F"))
+					.property("age", new IntegerProperty())
+					.property("birthdate", new DateTimeProperty())
+					.property("birthdateEstimated", new BooleanProperty())
+					.property("dead", new BooleanProperty())
+					.property("deathDate", new DateProperty())
+					.property("causeOfDeath", new StringProperty())
+					.property("attributes", new ArrayProperty(new RefProperty("#/definitions/PersonAttributeGetRef")))
+					.property("voided", new BooleanProperty());
 		}
 		if (rep instanceof DefaultRepresentation) {
 			model
-			        .property("preferredName", new RefProperty("#/definitions/PersonNameGetRef"))
-			        .property("preferredAddress", new RefProperty("#/definitions/PersonAddressGetRef"));
-			
+					.property("preferredName", new RefProperty("#/definitions/PersonNameGetRef"))
+					.property("preferredAddress", new RefProperty("#/definitions/PersonAddressGetRef"));
+
 		} else if (rep instanceof FullRepresentation) {
 			model
-			        .property("preferredName", new RefProperty("#/definitions/PersonNameGet"))
-			        .property("preferredAddress", new RefProperty("#/definitions/PersonAddressGet"))
-			        .property("names", new ArrayProperty(new RefProperty("#/definitions/PersonNameGet")))
-			        .property("addresses", new ArrayProperty(new RefProperty("#/definitions/PersonAddressGet")));
+					.property("preferredName", new RefProperty("#/definitions/PersonNameGet"))
+					.property("preferredAddress", new RefProperty("#/definitions/PersonAddressGet"))
+					.property("names", new ArrayProperty(new RefProperty("#/definitions/PersonNameGet")))
+					.property("addresses", new ArrayProperty(new RefProperty("#/definitions/PersonAddressGet")));
 		}
 		return model;
 	}
-	
+
 	@Override
 	public Model getCREATEModel(Representation representation) {
 		ModelImpl model = new ModelImpl()
-		        .property("names", new ArrayProperty(new RefProperty("#/definitions/PersonNameCreate")))
-		        .property("gender", new StringProperty()._enum("M")._enum("F"))
-		        .property("age", new IntegerProperty())
-		        .property("birthdate", new DateProperty())
-		        .property("birthdateEstimated", new BooleanProperty()._default(false))
-		        .property("dead", new BooleanProperty()._default(false))
-		        .property("deathDate", new DateProperty())
-		        .property("causeOfDeath", new StringProperty())
-		        .property("addresses", new ArrayProperty(new RefProperty("#/definitions/PersonAddressCreate")))
-		        .property("attributes", new ArrayProperty(new RefProperty("#/definitions/PersonAttributeCreate")));
-		
+				.property("names", new ArrayProperty(new RefProperty("#/definitions/PersonNameCreate")))
+				.property("gender", new StringProperty()._enum("M")._enum("F"))
+				.property("age", new IntegerProperty())
+				.property("birthdate", new DateProperty())
+				.property("birthdateEstimated", new BooleanProperty()._default(false))
+				.property("dead", new BooleanProperty()._default(false))
+				.property("deathDate", new DateProperty())
+				.property("causeOfDeath", new StringProperty())
+				.property("addresses", new ArrayProperty(new RefProperty("#/definitions/PersonAddressCreate")))
+				.property("attributes", new ArrayProperty(new RefProperty("#/definitions/PersonAttributeCreate")));
+
 		model.setRequired(Arrays.asList("names", "gender"));
 		return model;
 	}
-	
+
 	@Override
 	public Model getUPDATEModel(Representation representation) {
 		return new ModelImpl()
-		        .property("dead", new BooleanProperty())
-		        .property("causeOfDeath", new StringProperty())
-		        .property("deathDate", new DateProperty())
-		        .property("age", new IntegerProperty())
-		        .property("gender", new StringProperty()._enum("M")._enum("F"))
-		        .property("birthdate", new DateProperty())
-		        .property("birthdateEstimated", new BooleanProperty()._default(false))
-		        .property("preferredName", new StringProperty().example("uuid"))
-		        .property("preferredAddress", new StringProperty().example("uuid"))
-		        .property("attributes", new ArrayProperty(new RefProperty("#/definitions/PersonAttributeCreate")))
-		        
-		        .required("dead").required("causeOfDeath");
+				.property("dead", new BooleanProperty())
+				.property("causeOfDeath", new StringProperty())
+				.property("deathDate", new DateProperty())
+				.property("age", new IntegerProperty())
+				.property("gender", new StringProperty()._enum("M")._enum("F"))
+				.property("birthdate", new DateProperty())
+				.property("birthdateEstimated", new BooleanProperty()._default(false))
+				.property("preferredName", new StringProperty().example("uuid"))
+				.property("preferredAddress", new StringProperty().example("uuid"))
+				.property("attributes", new ArrayProperty(new RefProperty("#/definitions/PersonAttributeCreate")))
+
+				.required("dead").required("causeOfDeath");
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getPropertiesToExposeAsSubResources()
 	 */
@@ -216,10 +216,10 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	public List<String> getPropertiesToExposeAsSubResources() {
 		return Arrays.asList("names", "addresses", "attributes");
 	}
-	
+
 	/**
 	 * Returns non-voided names for a person
-	 * 
+	 *
 	 * @param instance
 	 * @return
 	 */
@@ -227,13 +227,13 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	public static Set<PersonName> getNames(Person instance) {
 		return RestUtil.removeVoidedData(instance.getNames());
 	}
-	
+
 	/**
 	 * Sets names and marks the first one as preferred if none is marked. It also makes sure that
 	 * only one name is marked as preferred and changes the rest to non-preferred.
 	 * <p/>
 	 * It takes the list so that the order is preserved.
-	 * 
+	 *
 	 * @param instance
 	 * @param names
 	 */
@@ -252,20 +252,20 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns non-voided attributes of a person
-	 * 
+	 *
 	 * @param instance
 	 */
 	@PropertyGetter("attributes")
 	public static List<PersonAttribute> getAttributes(Person instance) {
 		return instance.getActiveAttributes();
 	}
-	
+
 	/**
 	 * Sets attributes on the given person.
-	 * 
+	 *
 	 * @param instance
 	 * @param attrs
 	 */
@@ -273,7 +273,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	public static void setAttributes(Person instance, List<PersonAttribute> attrs) {
 		for (PersonAttribute attr : attrs) {
 			PersonAttribute existingAttribute = instance.getAttribute(Context.getPersonService()
-			        .getPersonAttributeTypeByUuid(attr.getAttributeType().getUuid()));
+					.getPersonAttributeTypeByUuid(attr.getAttributeType().getUuid()));
 			if (existingAttribute != null) {
 				if (attr.getValue() == null) {
 					instance.removeAttribute(existingAttribute);
@@ -285,10 +285,10 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns non-voided addresses for a person
-	 * 
+	 *
 	 * @param instance
 	 * @return
 	 */
@@ -296,13 +296,13 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	public static Set<PersonAddress> getAddresses(Person instance) {
 		return RestUtil.removeVoidedData(instance.getAddresses());
 	}
-	
+
 	/**
 	 * Sets addresses and marks the first one as preferred if none is marked. It also makes sure
 	 * that only one address is marked as preferred and changes the rest to non-preferred.
 	 * <p/>
 	 * It takes the list so that the order is preserved.
-	 * 
+	 *
 	 * @param instance
 	 * @param addresses
 	 */
@@ -321,10 +321,10 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 			}
 		}
 	}
-	
+
 	/**
 	 * Sets the preferred name for a person. If no name exists new name is set as preferred.
-	 * 
+	 *
 	 * @param instance
 	 * @param name
 	 * @throws ResourceDoesNotSupportOperationException
@@ -334,7 +334,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		if (name.getId() == null) {
 			throw new ResourceDoesNotSupportOperationException("Only an existing name can be marked as preferred!");
 		}
-		
+
 		// switching which name is preferred
 		for (PersonName existing : instance.getNames()) {
 			if (existing.isPreferred() && !existing.equals(name))
@@ -343,12 +343,12 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		name.setPreferred(true);
 		instance.addName(name);
 	}
-	
+
 	@PropertyGetter("preferredName")
 	public static PersonName getPreferredName(Person instance) {
 		return instance.getPersonName();
 	}
-	
+
 	@PropertySetter("age")
 	public static void setAge(Person person, Integer age) throws ResourceDoesNotSupportOperationException {
 		if (person.getBirthdate() == null && age != null) {
@@ -356,36 +356,36 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 			person.setBirthdateEstimated(true);
 		}
 	}
-	
+
 	/**
 	 * Sets the preferred address for a person. If no address exists new address is set as
 	 * preferred.
-	 * 
+	 *
 	 * @param instance
 	 * @param address
 	 * @throws ResourceDoesNotSupportOperationException
 	 */
 	@PropertySetter("preferredAddress")
 	public static void setPreferredAddress(Person instance, PersonAddress address)
-	        throws ResourceDoesNotSupportOperationException {
+			throws ResourceDoesNotSupportOperationException {
 		if (address.getPersonAddressId() == null) {
 			throw new ResourceDoesNotSupportOperationException("Only an existing address can be marked as preferred!");
 		}
-		
+
 		//un mark the current preferred address as preferred if any
 		for (PersonAddress existing : instance.getAddresses()) {
 			if (existing.isPreferred() && !OpenmrsUtil.nullSafeEquals(existing, address))
 				existing.setPreferred(false);
 		}
 		address.setPreferred(true);
-		
+
 	}
-	
+
 	@PropertyGetter("preferredAddress")
 	public static PersonAddress getPreferredAddress(Person instance) {
 		return instance.getPersonAddress();
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#getByUniqueId(java.lang.String)
 	 */
@@ -393,7 +393,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	public Person getByUniqueId(String uuid) {
 		return Context.getPersonService().getPersonByUuid(uuid);
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#newDelegate()
 	 */
@@ -401,7 +401,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	public Person newDelegate() {
 		return new Person();
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#save(java.lang.Object)
 	 */
@@ -409,7 +409,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	public Person save(Person person) {
 		return Context.getPersonService().savePerson(person);
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#doSearch(org.openmrs.module.webservices.rest.web.RequestContext)
 	 */
@@ -417,7 +417,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 	protected NeedsPaging<Person> doSearch(RequestContext context) {
 		return new NeedsPaging<Person>(Context.getPersonService().getPeople(context.getParameter("q"), null), context);
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#delete(java.lang.Object,
 	 *      java.lang.String, org.openmrs.module.webservices.rest.web.RequestContext)
@@ -430,7 +430,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		}
 		Context.getPersonService().voidPerson(person, reason);
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#purge(java.lang.Object,
 	 *      org.openmrs.module.webservices.rest.web.RequestContext)
@@ -443,7 +443,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		}
 		Context.getPersonService().purgePerson(person);
 	}
-	
+
 	/**
 	 * @param person
 	 * @return fullname (for concise display purposes)
@@ -453,10 +453,10 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		// TODO copy what is done in PatientResource to use configured name layout
 		if (person.getPersonName() == null)
 			return "";
-		
+
 		return person.getPersonName().getFullName();
 	}
-	
+
 	private static void copyNameFields(PersonName existingName, PersonName personName) {
 		existingName.setPreferred(personName.getPreferred());
 		existingName.setPrefix(personName.getPrefix());
@@ -468,7 +468,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		existingName.setFamilyNameSuffix(personName.getFamilyNameSuffix());
 		existingName.setDegree(personName.getDegree());
 	}
-	
+
 	private static void setFirstNameAsPreferred(List<PersonName> personNames) {
 		boolean hasPreferred = false;
 		for (PersonName name : personNames) {
@@ -484,7 +484,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 			personNames.iterator().next().setPreferred(true);
 		}
 	}
-	
+
 	private static PersonName getMatchingName(PersonName personName, Set<PersonName> personNames) {
 		for (PersonName existingName : personNames) {
 			String uuid = personName.getUuid();
@@ -494,7 +494,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		}
 		return null;
 	}
-	
+
 	private static PersonAddress getMatchingAddress(PersonAddress personAddress, Set<PersonAddress> personAddresses) {
 		for (PersonAddress existingAddress : personAddresses) {
 			if (personAddress.getUuid().equals(existingAddress.getUuid())) {
@@ -503,7 +503,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		}
 		return null;
 	}
-	
+
 	private static void copyAddressFields(PersonAddress existingAddress, PersonAddress address) {
 		existingAddress.setPreferred(address.getPreferred());
 		existingAddress.setAddress1(address.getAddress1());
@@ -521,7 +521,7 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 		existingAddress.setLongitude(address.getLongitude());
 		existingAddress.setDateCreated(address.getDateCreated());
 	}
-	
+
 	private static void setFirstAddressAsPreferred(List<PersonAddress> addresses) {
 		boolean hasPreferred = false;
 		for (PersonAddress address : addresses) {
@@ -537,11 +537,11 @@ public class PersonResource1_8 extends DataDelegatingCrudResource<Person> {
 			addresses.iterator().next().setPreferred(true);
 		}
 	}
-	
+
 	/**
 	 * Overrides the base getAuditInfo(delegate) since the dateCreated for person should get
 	 * personDateCreated attribute
-	 * 
+	 *
 	 * @param person the delegate person
 	 * @return audit information
 	 * @throws Exception
